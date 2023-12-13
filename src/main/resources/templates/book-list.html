@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Book Managment </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <!-- nalika Icon CSS -->
+    <link rel="stylesheet" th:href="@{/css/nalika-icon.css}">
+    <!-- owl.carousel CSS -->
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.transitions.css}">
+    <!-- animate CSS -->
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <!-- normalize CSS -->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- meanmenu icon CSS -->
+    <link rel="stylesheet" th:href="@{/css/meanmenu.min.css}">
+    <!-- main CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!-- morrisjs CSS -->
+    <link rel="stylesheet" th:href="@{/css/morrisjs/morris.css}">
+    <!-- mCustomScrollbar CSS -->
+    <link rel="stylesheet" th:href="@{/css/scrollbar/jquery.mCustomScrollbar.min.css}">
+    <!-- metisMenu CSS -->
+    <link rel="stylesheet" th:href="@{/css/metisMenu/metisMenu.min.css}">
+    <link rel="stylesheet" th:href="@{/css/metisMenu/metisMenu-vertical.css}">
+    <!-- calendar CSS -->
+    <link rel="stylesheet" th:href="@{/css/calendar/fullcalendar.min.css}">
+    <link rel="stylesheet" th:href="@{/css/calendar/fullcalendar.print.min.css}">
+    <!-- style CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- responsive CSS -->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <!-- modernizr JS -->
+    <script src="js/vendor/modernizr-2.8.3.min.js" th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+</head>
+
+<body>
+
+<div class="left-sidebar-pro">
+    <nav id="sidebar" class="">
+        <div class="left-custom-menu-adp-wrap comment-scrollbar">
+            <nav class="sidebar-nav left-sidebar-menu-pro">
+                <ul class="metismenu" id="menu1">
+                    <li>
+                        <a class="" href="/dashboard">
+                            <i class="icon nalika-home icon-wrap"></i>
+                            <span class="mini-click-non">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/book" aria-expanded="false"><i
+                                class="fa fa-book m" style="margin-right: 5px"></i> <span
+                                class="mini-click-non">Book</span></a>
+                    </li>
+                    <li>
+                        <a class="" href="/category" aria-expanded="false"><i
+                                class="fa fa-list " style="margin-right: 5px"></i><span
+                                class="mini-click-non">Category</span></a>
+
+                    </li>
+                    <li>
+                        <a class="" href="/user" aria-expanded="false"><i
+                                class="fa fa-user" style="margin-right: 5px"></i> <span
+                                class="mini-click-non">User</span></a>
+
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+    </nav>
+</div>
+<div class="all-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="product-status-wrap">
+                    <h4>Book Management</h4>
+                    <div class="add-product">
+                        <a href="book/edit">Add Book</a>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Book Title</th>
+                            <th>Status</th>
+                            <th>Completed</th>
+                            <th>Setting</th>
+                        </tr>
+                        <tr th:each="book,iterStat  : ${bookPage.getContent()}">
+                            <td th:text="${book.id }"></td>
+                            <td><img th:src="${book.avatarUrl}" alt=""/></td>
+                            <td th:text="${book.title}"></td>
+                            <td>
+                                <button type="submit"
+                                        th:class="${book.status == true ? 'pd-setting' : 'ds-setting'}"
+                                        th:text="${book.status}"></button>
+                            </td>
+                            <td>
+                                <button th:class="${book.isDone == true ? 'pd-setting' : 'ds-setting'}"
+                                        th:text="${book.isDone}"></button>
+                            </td>
+                            <td>
+                                <form action="/book/edit" method="get">
+                                    <input type="hidden" name="bookId" th:value="${book.id}"/>
+                                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                                <form action="/book/delete" method="post"
+                                      onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                    <input type="hidden" name="userId" th:value="${book.id}"/>
+                                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="custom-pagination">
+                    <ul th:if="${bookPage.totalPages > 0}" class="pagination"
+                        th:each="pageNumber : ${pageNumbers}">
+                        <li class="page-item">
+                            <a th:href="@{/book(size=${bookPage.size}, page=${pageNumber})}"
+                               th:text="${pageNumber}"
+                               th:class="${pageNumber==bookPage.number + 1} ? active"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Start Welcome area -->
+
+<!-- jquery
+    ============================================ -->
+<script th:src="@{/js/vendor/jquery-1.12.4.min.js}"></script>
+<!-- bootstrap JS -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- wow JS -->
+<script th:src="@{/js/wow.min.js}"></script>
+<!-- price-slider JS -->
+<script th:src="@{/js/jquery-price-slider.js}"></script>
+<!-- meanmenu JS -->
+<script th:src="@{/js/jquery.meanmenu.js}"></script>
+<!-- owl.carousel JS -->
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<!-- sticky JS -->
+<script th:src="@{/js/jquery.sticky.js}"></script>
+<!-- scrollUp JS -->
+<script th:src="@{/js/jquery.scrollUp.min.js}"></script>
+<!-- mCustomScrollbar JS -->
+<script th:src="@{/js/scrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/js/scrollbar/mCustomScrollbar-active.js}"></script>
+<!-- metisMenu JS -->
+<script th:src="@{/js/metisMenu/metisMenu.min.js}"></script>
+<script th:src="@{/js/metisMenu/metisMenu-active.js}"></script>
+<!-- sparkline JS -->
+<script th:src="@{/js/sparkline/jquery.sparkline.min.js}"></script>
+<script th:src="@{/js/sparkline/jquery.charts-sparkline.js}"></script>
+<!-- calendar JS -->
+<script th:src="@{/js/calendar/moment.min.js}"></script>
+<script th:src="@{/js/calendar/fullcalendar.min.js}"></script>
+<script th:src="@{/js/calendar/fullcalendar-active.js}"></script>
+<!-- float JS -->
+<script th:src="@{/js/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/flot/jquery.flot.resize.js}"></script>
+<script th:src="@{/js/flot/curvedLines.js}"></script>
+<script th:src="@{/js/flot/flot-active.js}"></script>
+<!-- plugins JS -->
+<script th:src="@{/js/plugins.js}"></script>
+<!-- main JS -->
+<script th:src="@{/js/main.js}"></script>
+</body>
+
+</html>
+
